@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% block cartactive%}active{% endblock cartactive%}
+{% block body%}
+
+<div class="container" style="margin-top: 125px;">
+
+  <div class="row justify-content-evenly">
+    <div class="col-12">
+      <h4 class="mb-3 text-center">CART COLLECTION</h4>
+      <hr style="border-color:aliceblue">
+    </div>
+    <table class="table table-bordered mt-5 mb-5">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Product Name</th>
+          <th>Unit</th>
+          <th>Quantity</th>
+          <th>Amount</th>
+          <th>Remove</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for data in cart %}
+        <tr>
+          <td><img src="{{data.product_id.product_image.url}}" height="75px"></td>
+          <td>{{data.product_id.name}}</td>
+          <td>{{data.product_id.selling_price| stringformat:'d'}}</td>
+          <td>{{data.product_quantity}}</td>
+          <td class="amt">{{data.total_cost | stringformat:'d'}}</td>
+          <td><a href="removecart/{{data.id}}" onclick="return confirm('Are you sure? to remove')"><button
+                class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Remove</button></a></td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <td></td>
+          <td></td>
+          <td colspan="2"><b>Total Amount</b></td>
+          <td id="net"></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td colspan="4"></td>
+          <td colspan="2"><button type="button" data-bs-toggle="modal" data-bs-target="#buyform"
+              style="width: 150px;height:35px;background-color: rgb(39, 101, 163);color: white;font-weight:bold;border: none;border-radius: 15px;">
+              Buy
+            </button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal fade" id="buyform" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content" style="background-color:rgb(250, 248, 244)">
+        <div class="modal-header">
+          <h5 class="modal-title fst-italic fw-bolder h3" id="staticBackdropLabel" style="color:darkblue">Let's Shop
+            Product Buy</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="container p-3" style="background-color:beige">
+            <div class="card px-4" style="background-color:rgb(227, 227, 171)">
+              <p class="h4 py-3 my-3 text-center" style="color:darkblue">Payment Details</p>
+              <div class="row gx-3">
+                <div class="col-12">
+                  <div class="d-flex flex-column">
+                    <p class="text mb-3 h5" style="color:darkblue">Person Name</p>
+                    <input class="form-control mb-3" type="text" placeholder="Name" >
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="d-flex flex-column">
+                    <p class="text mb-3 h5" style="color:darkblue">Card Number</p>
+                    <input class="form-control mb-3" type="text" placeholder="1234 5678 435678">
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="d-flex flex-column">
+                    <p class="text mb-3 h5" style="color:darkblue">Expiry</p>
+                    <input class="form-control mb-3" type="text" placeholder="MM/YYYY">
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="d-flex flex-column">
+                    <p class="text mb-3 h5" style="color:darkblue">CVV/CVC</p>
+                    <input class="form-control mb-3 pt-2 " type="password" placeholder="***">
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="btn btn-primary mb-3">
+                    <span class="ps-3 h5" style="color:white;" id="pay"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <a href="/buy"><button type="button" class="btn btn-primary">Confirm</button></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  const node = document.querySelectorAll('.amt')
+  const arr = Array.from(node);
+  const res = arr.reduce((acc, curr) => {
+    return acc += Number(curr.textContent)
+  }, 0)
+  document.getElementById("net").innerHTML = "Rs. " + res
+  document.getElementById("pay").innerHTML = "Rs. " + res
+</script>
+
+{% endblock body%}

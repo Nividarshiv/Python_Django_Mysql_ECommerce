@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block body%}
+
+<div class="container " style="margin-top:100px;margin-bottom: 75px;">
+  <div class="row">
+    <div class="col-12 bg-light">
+      <h4 class="mb-3 text-center fw-bold fst-italic ">AWESOME PRODUCT {{category|upper}}</h4>
+      <hr style="border-color:aliceblue">
+    </div>
+    {% include 'message.html' %}
+    {% for data in product %}
+    <div class="col-md-4 col-lg-3 mb-3 mt-5">
+      <div class="card" style="width: 18rem;">
+        <img src="{{data.product_image.url}}" class="card-img-top" alt="..." height="200px">
+
+        <a href="/collectiondetail/{{category}}/{{data.name}}" class="btn text-decoration-none">
+          <div class="card-body">
+            <h5 class="card-title">{{data.name}}</h5>
+            <p class="card-text">
+              <span class="float-start old_price"><s>RS.{{data.original_price | stringformat:'d'}}</s></span>
+              <span class="float-end new_price">Rs.{{data.selling_price | stringformat:'d'}}</span>
+            </p>
+          </div>
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock body%}

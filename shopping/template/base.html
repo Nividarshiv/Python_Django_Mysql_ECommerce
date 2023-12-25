@@ -1,0 +1,56 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <title>Let's shop</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="/"><i class='fa fa-cart-plus' style='font-size:25px'></i> Let's Shop</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav ms-auto">
+          <a class="nav-link {% block homeactive%}{% endblock homeactive%}" aria-current="page" href="/"> Home</a>
+          <a class="nav-link {% block collectionactive%}{% endblock collectionactive%}" href="/collection"> Collection</a>
+          {% if request.user.is_authenticated %}
+          <a class="nav-link  active" href="#"><i class='fa fa-user'></i> {{request.user}}</a>
+          <a class="nav-link" href="/fnlogout"> Logout</a>
+          {% else %}
+          <a class="nav-link {% block registeractive%}{% endblock registeractive%}" href="/register"> Register</a>
+          <a class="nav-link {% block loginactive%}{% endblock loginactive%}" href="/fnlogin"> Login</a>
+          {% endif %}
+          <a class="nav-link {% block cartactive%}{% endblock cartactive%}" href="/cartpage"><i class='fa fa-shopping-cart'></i> Cart</a>
+          <a class="nav-link {% block favactive%}{% endblock favactive%}" href="/favouritepage"><i class='fa fa-heart'></i> Favourite</a>
+          <form class="d-flex" action="/search" method="get">
+            {% csrf_token %}
+            <input class="form-control me-1" type="search" placeholder="Search" aria-label="Search" name="insearch"
+              style="width: 100px;height: 25px;text-align: center;margin-top: 8px;background-color:aliceblue">
+            <button class="btn btn-outline-success" type="submit"
+              style="height: 30px;margin-top: 6px;text-align: center;">Search</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </nav>
+  {% block body%}
+  {% endblock body%}
+  {% include 'footer.html' %}
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
